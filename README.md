@@ -1,12 +1,12 @@
-WiringPi
+WiringOP
 ========
 
-An implementation of most of the Arduino Wiring functions for the Raspberry Pi
+An implementation of most of the Arduino Wiring functions for the Orange Pi
 
 Git
 ===
 
-You will need to clone this repository with the --recursive flag on git clone as it contains WiringPi as a submodule.
+You will need to clone this repository with the --recursive flag on git clone as it contains WiringOP as a submodule.
 
 Building
 ========
