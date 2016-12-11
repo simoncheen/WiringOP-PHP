@@ -1066,7 +1066,6 @@ extern "C" {
 #include "WiringPi/wiringPi/wiringSerial.h"
 #include "WiringPi/wiringPi/wiringShift.h"
 #include "WiringPi/wiringPi/drcSerial.h"
-#include "WiringPi/wiringPi/ads1115.h"
 #include "WiringPi/wiringPi/max31855.h"
 #include "WiringPi/wiringPi/max5322.h"
 #include "WiringPi/wiringPi/mcp23008.h"
@@ -1096,7 +1095,6 @@ extern "C" {
 #include "WiringPi/devLib/maxdetect.h"
 #include "WiringPi/devLib/piGlow.h"
 #include "WiringPi/devLib/piNes.h"
-#include "WiringPi/devLib/scrollPhat.h"
 
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
@@ -1653,6 +1651,32 @@ fail:
 }
 
 
+ZEND_NAMED_FUNCTION(_wrap_physPinToPin) {
+  int arg1 ;
+  zval **args[1];
+  int result;
+  
+  SWIG_ResetError(TSRMLS_C);
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/usr/share/swig3.0/php/utils.i,7,CONVERT_INT_IN@*/
+  convert_to_long_ex(args[0]);
+  arg1 = (int) Z_LVAL_PP(args[0]);
+  /*@SWIG@*/;
+  
+  result = (int)physPinToPin(arg1);
+  {
+    ZVAL_LONG(return_value,result);
+  }
+  return;
+fail:
+  SWIG_FAIL(TSRMLS_C);
+}
+
+
 ZEND_NAMED_FUNCTION(_wrap_setPadDrive) {
   int arg1 ;
   int arg2 ;
@@ -1756,24 +1780,6 @@ ZEND_NAMED_FUNCTION(_wrap_digitalWriteByte) {
   
   digitalWriteByte(arg1);
   
-  return;
-fail:
-  SWIG_FAIL(TSRMLS_C);
-}
-
-
-ZEND_NAMED_FUNCTION(_wrap_digitalReadByte) {
-  unsigned int result;
-  
-  SWIG_ResetError(TSRMLS_C);
-  if(ZEND_NUM_ARGS() != 0) {
-    WRONG_PARAM_COUNT;
-  }
-  
-  result = (unsigned int)digitalReadByte();
-  {
-    ZVAL_LONG(return_value,result);
-  }
   return;
 fail:
   SWIG_FAIL(TSRMLS_C);
@@ -2424,46 +2430,6 @@ fail:
 }
 
 
-ZEND_NAMED_FUNCTION(_wrap_wiringPiSPISetupMode) {
-  int arg1 ;
-  int arg2 ;
-  int arg3 ;
-  zval **args[3];
-  int result;
-  
-  SWIG_ResetError(TSRMLS_C);
-  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
-    WRONG_PARAM_COUNT;
-  }
-  
-  
-  /*@SWIG:/usr/share/swig3.0/php/utils.i,7,CONVERT_INT_IN@*/
-  convert_to_long_ex(args[0]);
-  arg1 = (int) Z_LVAL_PP(args[0]);
-  /*@SWIG@*/;
-  
-  
-  /*@SWIG:/usr/share/swig3.0/php/utils.i,7,CONVERT_INT_IN@*/
-  convert_to_long_ex(args[1]);
-  arg2 = (int) Z_LVAL_PP(args[1]);
-  /*@SWIG@*/;
-  
-  
-  /*@SWIG:/usr/share/swig3.0/php/utils.i,7,CONVERT_INT_IN@*/
-  convert_to_long_ex(args[2]);
-  arg3 = (int) Z_LVAL_PP(args[2]);
-  /*@SWIG@*/;
-  
-  result = (int)wiringPiSPISetupMode(arg1,arg2,arg3);
-  {
-    ZVAL_LONG(return_value,result);
-  }
-  return;
-fail:
-  SWIG_FAIL(TSRMLS_C);
-}
-
-
 ZEND_NAMED_FUNCTION(_wrap_wiringPiSPISetup) {
   int arg1 ;
   int arg2 ;
@@ -2857,39 +2823,6 @@ ZEND_NAMED_FUNCTION(_wrap_drcSetupSerial) {
   /*@SWIG@*/;
   
   result = (int)drcSetupSerial(arg1,arg2,(char const *)arg3,arg4);
-  {
-    ZVAL_LONG(return_value,result);
-  }
-  return;
-fail:
-  SWIG_FAIL(TSRMLS_C);
-}
-
-
-ZEND_NAMED_FUNCTION(_wrap_ads1115Setup) {
-  int arg1 ;
-  int arg2 ;
-  zval **args[2];
-  int result;
-  
-  SWIG_ResetError(TSRMLS_C);
-  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
-    WRONG_PARAM_COUNT;
-  }
-  
-  
-  /*@SWIG:/usr/share/swig3.0/php/utils.i,7,CONVERT_INT_IN@*/
-  convert_to_long_ex(args[0]);
-  arg1 = (int) Z_LVAL_PP(args[0]);
-  /*@SWIG@*/;
-  
-  
-  /*@SWIG:/usr/share/swig3.0/php/utils.i,7,CONVERT_INT_IN@*/
-  convert_to_long_ex(args[1]);
-  arg2 = (int) Z_LVAL_PP(args[1]);
-  /*@SWIG@*/;
-  
-  result = (int)ads1115Setup(arg1,arg2);
   {
     ZVAL_LONG(return_value,result);
   }
@@ -5302,362 +5235,6 @@ fail:
 }
 
 
-ZEND_NAMED_FUNCTION(_wrap_scrollPhatPoint) {
-  int arg1 ;
-  int arg2 ;
-  int arg3 ;
-  zval **args[3];
-  
-  SWIG_ResetError(TSRMLS_C);
-  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
-    WRONG_PARAM_COUNT;
-  }
-  
-  
-  /*@SWIG:/usr/share/swig3.0/php/utils.i,7,CONVERT_INT_IN@*/
-  convert_to_long_ex(args[0]);
-  arg1 = (int) Z_LVAL_PP(args[0]);
-  /*@SWIG@*/;
-  
-  
-  /*@SWIG:/usr/share/swig3.0/php/utils.i,7,CONVERT_INT_IN@*/
-  convert_to_long_ex(args[1]);
-  arg2 = (int) Z_LVAL_PP(args[1]);
-  /*@SWIG@*/;
-  
-  
-  /*@SWIG:/usr/share/swig3.0/php/utils.i,7,CONVERT_INT_IN@*/
-  convert_to_long_ex(args[2]);
-  arg3 = (int) Z_LVAL_PP(args[2]);
-  /*@SWIG@*/;
-  
-  scrollPhatPoint(arg1,arg2,arg3);
-  
-  return;
-fail:
-  SWIG_FAIL(TSRMLS_C);
-}
-
-
-ZEND_NAMED_FUNCTION(_wrap_scrollPhatLine) {
-  int arg1 ;
-  int arg2 ;
-  int arg3 ;
-  int arg4 ;
-  int arg5 ;
-  zval **args[5];
-  
-  SWIG_ResetError(TSRMLS_C);
-  if(ZEND_NUM_ARGS() != 5 || zend_get_parameters_array_ex(5, args) != SUCCESS) {
-    WRONG_PARAM_COUNT;
-  }
-  
-  
-  /*@SWIG:/usr/share/swig3.0/php/utils.i,7,CONVERT_INT_IN@*/
-  convert_to_long_ex(args[0]);
-  arg1 = (int) Z_LVAL_PP(args[0]);
-  /*@SWIG@*/;
-  
-  
-  /*@SWIG:/usr/share/swig3.0/php/utils.i,7,CONVERT_INT_IN@*/
-  convert_to_long_ex(args[1]);
-  arg2 = (int) Z_LVAL_PP(args[1]);
-  /*@SWIG@*/;
-  
-  
-  /*@SWIG:/usr/share/swig3.0/php/utils.i,7,CONVERT_INT_IN@*/
-  convert_to_long_ex(args[2]);
-  arg3 = (int) Z_LVAL_PP(args[2]);
-  /*@SWIG@*/;
-  
-  
-  /*@SWIG:/usr/share/swig3.0/php/utils.i,7,CONVERT_INT_IN@*/
-  convert_to_long_ex(args[3]);
-  arg4 = (int) Z_LVAL_PP(args[3]);
-  /*@SWIG@*/;
-  
-  
-  /*@SWIG:/usr/share/swig3.0/php/utils.i,7,CONVERT_INT_IN@*/
-  convert_to_long_ex(args[4]);
-  arg5 = (int) Z_LVAL_PP(args[4]);
-  /*@SWIG@*/;
-  
-  scrollPhatLine(arg1,arg2,arg3,arg4,arg5);
-  
-  return;
-fail:
-  SWIG_FAIL(TSRMLS_C);
-}
-
-
-ZEND_NAMED_FUNCTION(_wrap_scrollPhatLineTo) {
-  int arg1 ;
-  int arg2 ;
-  int arg3 ;
-  zval **args[3];
-  
-  SWIG_ResetError(TSRMLS_C);
-  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
-    WRONG_PARAM_COUNT;
-  }
-  
-  
-  /*@SWIG:/usr/share/swig3.0/php/utils.i,7,CONVERT_INT_IN@*/
-  convert_to_long_ex(args[0]);
-  arg1 = (int) Z_LVAL_PP(args[0]);
-  /*@SWIG@*/;
-  
-  
-  /*@SWIG:/usr/share/swig3.0/php/utils.i,7,CONVERT_INT_IN@*/
-  convert_to_long_ex(args[1]);
-  arg2 = (int) Z_LVAL_PP(args[1]);
-  /*@SWIG@*/;
-  
-  
-  /*@SWIG:/usr/share/swig3.0/php/utils.i,7,CONVERT_INT_IN@*/
-  convert_to_long_ex(args[2]);
-  arg3 = (int) Z_LVAL_PP(args[2]);
-  /*@SWIG@*/;
-  
-  scrollPhatLineTo(arg1,arg2,arg3);
-  
-  return;
-fail:
-  SWIG_FAIL(TSRMLS_C);
-}
-
-
-ZEND_NAMED_FUNCTION(_wrap_scrollPhatRectangle) {
-  int arg1 ;
-  int arg2 ;
-  int arg3 ;
-  int arg4 ;
-  int arg5 ;
-  int arg6 ;
-  zval **args[6];
-  
-  SWIG_ResetError(TSRMLS_C);
-  if(ZEND_NUM_ARGS() != 6 || zend_get_parameters_array_ex(6, args) != SUCCESS) {
-    WRONG_PARAM_COUNT;
-  }
-  
-  
-  /*@SWIG:/usr/share/swig3.0/php/utils.i,7,CONVERT_INT_IN@*/
-  convert_to_long_ex(args[0]);
-  arg1 = (int) Z_LVAL_PP(args[0]);
-  /*@SWIG@*/;
-  
-  
-  /*@SWIG:/usr/share/swig3.0/php/utils.i,7,CONVERT_INT_IN@*/
-  convert_to_long_ex(args[1]);
-  arg2 = (int) Z_LVAL_PP(args[1]);
-  /*@SWIG@*/;
-  
-  
-  /*@SWIG:/usr/share/swig3.0/php/utils.i,7,CONVERT_INT_IN@*/
-  convert_to_long_ex(args[2]);
-  arg3 = (int) Z_LVAL_PP(args[2]);
-  /*@SWIG@*/;
-  
-  
-  /*@SWIG:/usr/share/swig3.0/php/utils.i,7,CONVERT_INT_IN@*/
-  convert_to_long_ex(args[3]);
-  arg4 = (int) Z_LVAL_PP(args[3]);
-  /*@SWIG@*/;
-  
-  
-  /*@SWIG:/usr/share/swig3.0/php/utils.i,7,CONVERT_INT_IN@*/
-  convert_to_long_ex(args[4]);
-  arg5 = (int) Z_LVAL_PP(args[4]);
-  /*@SWIG@*/;
-  
-  
-  /*@SWIG:/usr/share/swig3.0/php/utils.i,7,CONVERT_INT_IN@*/
-  convert_to_long_ex(args[5]);
-  arg6 = (int) Z_LVAL_PP(args[5]);
-  /*@SWIG@*/;
-  
-  scrollPhatRectangle(arg1,arg2,arg3,arg4,arg5,arg6);
-  
-  return;
-fail:
-  SWIG_FAIL(TSRMLS_C);
-}
-
-
-ZEND_NAMED_FUNCTION(_wrap_scrollPhatUpdate) {
-  SWIG_ResetError(TSRMLS_C);
-  if(ZEND_NUM_ARGS() != 0) {
-    WRONG_PARAM_COUNT;
-  }
-  
-  scrollPhatUpdate();
-  
-  return;
-fail:
-  SWIG_FAIL(TSRMLS_C);
-}
-
-
-ZEND_NAMED_FUNCTION(_wrap_scrollPhatClear) {
-  SWIG_ResetError(TSRMLS_C);
-  if(ZEND_NUM_ARGS() != 0) {
-    WRONG_PARAM_COUNT;
-  }
-  
-  scrollPhatClear();
-  
-  return;
-fail:
-  SWIG_FAIL(TSRMLS_C);
-}
-
-
-ZEND_NAMED_FUNCTION(_wrap_scrollPhatPutchar) {
-  int arg1 ;
-  zval **args[1];
-  int result;
-  
-  SWIG_ResetError(TSRMLS_C);
-  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
-    WRONG_PARAM_COUNT;
-  }
-  
-  
-  /*@SWIG:/usr/share/swig3.0/php/utils.i,7,CONVERT_INT_IN@*/
-  convert_to_long_ex(args[0]);
-  arg1 = (int) Z_LVAL_PP(args[0]);
-  /*@SWIG@*/;
-  
-  result = (int)scrollPhatPutchar(arg1);
-  {
-    ZVAL_LONG(return_value,result);
-  }
-  return;
-fail:
-  SWIG_FAIL(TSRMLS_C);
-}
-
-
-ZEND_NAMED_FUNCTION(_wrap_scrollPhatPuts) {
-  char *arg1 = (char *) 0 ;
-  zval **args[1];
-  
-  SWIG_ResetError(TSRMLS_C);
-  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
-    WRONG_PARAM_COUNT;
-  }
-  
-  
-  /*@SWIG:/usr/share/swig3.0/php/utils.i,62,CONVERT_STRING_IN@*/
-  if ((*args[0])->type==IS_NULL) {
-    arg1 = (char *) 0;
-  } else {
-    convert_to_string_ex(args[0]);
-    arg1 = (char *) Z_STRVAL_PP(args[0]);
-  }
-  /*@SWIG@*/;
-  
-  scrollPhatPuts((char const *)arg1);
-  
-  return;
-fail:
-  SWIG_FAIL(TSRMLS_C);
-}
-
-
-ZEND_NAMED_FUNCTION(_wrap_scrollPhatPrintf) {
-  char *arg1 = (char *) 0 ;
-  void *arg2 = 0 ;
-  zval **args[1];
-  
-  SWIG_ResetError(TSRMLS_C);
-  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
-    WRONG_PARAM_COUNT;
-  }
-  
-  
-  /*@SWIG:/usr/share/swig3.0/php/utils.i,62,CONVERT_STRING_IN@*/
-  if ((*args[0])->type==IS_NULL) {
-    arg1 = (char *) 0;
-  } else {
-    convert_to_string_ex(args[0]);
-    arg1 = (char *) Z_STRVAL_PP(args[0]);
-  }
-  /*@SWIG@*/;
-  
-  scrollPhatPrintf((char const *)arg1,arg2);
-  
-  return;
-fail:
-  SWIG_FAIL(TSRMLS_C);
-}
-
-
-ZEND_NAMED_FUNCTION(_wrap_scrollPhatPrintSpeed) {
-  int arg1 ;
-  zval **args[1];
-  
-  SWIG_ResetError(TSRMLS_C);
-  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
-    WRONG_PARAM_COUNT;
-  }
-  
-  
-  /*@SWIG:/usr/share/swig3.0/php/utils.i,7,CONVERT_INT_IN@*/
-  convert_to_long_ex(args[0]);
-  arg1 = (int) Z_LVAL_PP(args[0]);
-  /*@SWIG@*/;
-  
-  scrollPhatPrintSpeed(arg1);
-  
-  return;
-fail:
-  SWIG_FAIL(TSRMLS_C);
-}
-
-
-ZEND_NAMED_FUNCTION(_wrap_scrollPhatIntensity) {
-  int arg1 ;
-  zval **args[1];
-  
-  SWIG_ResetError(TSRMLS_C);
-  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
-    WRONG_PARAM_COUNT;
-  }
-  
-  
-  /*@SWIG:/usr/share/swig3.0/php/utils.i,7,CONVERT_INT_IN@*/
-  convert_to_long_ex(args[0]);
-  arg1 = (int) Z_LVAL_PP(args[0]);
-  /*@SWIG@*/;
-  
-  scrollPhatIntensity(arg1);
-  
-  return;
-fail:
-  SWIG_FAIL(TSRMLS_C);
-}
-
-
-ZEND_NAMED_FUNCTION(_wrap_scrollPhatSetup) {
-  int result;
-  
-  SWIG_ResetError(TSRMLS_C);
-  if(ZEND_NUM_ARGS() != 0) {
-    WRONG_PARAM_COUNT;
-  }
-  
-  result = (int)scrollPhatSetup();
-  {
-    ZVAL_LONG(return_value,result);
-  }
-  return;
-fail:
-  SWIG_FAIL(TSRMLS_C);
-}
-
-
 static ZEND_RSRC_DTOR_FUNC(_wrap_destroy_p_unsigned_char) {
   /* No destructor for simple type _p_unsigned_char */
   efree(rsrc->ptr);
@@ -5744,6 +5321,9 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_physpintogpio, 0, 0, 0)
  ZEND_ARG_PASS_INFO(0)
 ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_physpintopin, 0, 0, 0)
+ ZEND_ARG_PASS_INFO(0)
+ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_setpaddrive, 0, 0, 0)
  ZEND_ARG_PASS_INFO(0)
  ZEND_ARG_PASS_INFO(0)
@@ -5757,8 +5337,6 @@ ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_pwmtonewrite, 0, 0, 0)
 ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_digitalwritebyte, 0, 0, 0)
  ZEND_ARG_PASS_INFO(0)
-ZEND_END_ARG_INFO()
-ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_digitalreadbyte, 0, 0, 0)
 ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_pwmsetmode, 0, 0, 0)
  ZEND_ARG_PASS_INFO(0)
@@ -5839,11 +5417,6 @@ ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_wiringpispidatarw, 0, 0, 0)
  ZEND_ARG_PASS_INFO(0)
  ZEND_ARG_PASS_INFO(0)
 ZEND_END_ARG_INFO()
-ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_wiringpispisetupmode, 0, 0, 0)
- ZEND_ARG_PASS_INFO(0)
- ZEND_ARG_PASS_INFO(0)
- ZEND_ARG_PASS_INFO(0)
-ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_wiringpispisetup, 0, 0, 0)
  ZEND_ARG_PASS_INFO(0)
  ZEND_ARG_PASS_INFO(0)
@@ -5891,10 +5464,6 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_drcsetupserial, 0, 0, 0)
  ZEND_ARG_PASS_INFO(0)
  ZEND_ARG_PASS_INFO(0)
- ZEND_ARG_PASS_INFO(0)
- ZEND_ARG_PASS_INFO(0)
-ZEND_END_ARG_INFO()
-ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_ads1115setup, 0, 0, 0)
  ZEND_ARG_PASS_INFO(0)
  ZEND_ARG_PASS_INFO(0)
 ZEND_END_ARG_INFO()
@@ -6210,53 +5779,6 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_readnesjoystick, 0, 0, 0)
  ZEND_ARG_PASS_INFO(0)
 ZEND_END_ARG_INFO()
-ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_scrollphatpoint, 0, 0, 0)
- ZEND_ARG_PASS_INFO(0)
- ZEND_ARG_PASS_INFO(0)
- ZEND_ARG_PASS_INFO(0)
-ZEND_END_ARG_INFO()
-ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_scrollphatline, 0, 0, 0)
- ZEND_ARG_PASS_INFO(0)
- ZEND_ARG_PASS_INFO(0)
- ZEND_ARG_PASS_INFO(0)
- ZEND_ARG_PASS_INFO(0)
- ZEND_ARG_PASS_INFO(0)
-ZEND_END_ARG_INFO()
-ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_scrollphatlineto, 0, 0, 0)
- ZEND_ARG_PASS_INFO(0)
- ZEND_ARG_PASS_INFO(0)
- ZEND_ARG_PASS_INFO(0)
-ZEND_END_ARG_INFO()
-ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_scrollphatrectangle, 0, 0, 0)
- ZEND_ARG_PASS_INFO(0)
- ZEND_ARG_PASS_INFO(0)
- ZEND_ARG_PASS_INFO(0)
- ZEND_ARG_PASS_INFO(0)
- ZEND_ARG_PASS_INFO(0)
- ZEND_ARG_PASS_INFO(0)
-ZEND_END_ARG_INFO()
-ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_scrollphatupdate, 0, 0, 0)
-ZEND_END_ARG_INFO()
-ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_scrollphatclear, 0, 0, 0)
-ZEND_END_ARG_INFO()
-ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_scrollphatputchar, 0, 0, 0)
- ZEND_ARG_PASS_INFO(0)
-ZEND_END_ARG_INFO()
-ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_scrollphatputs, 0, 0, 0)
- ZEND_ARG_PASS_INFO(0)
-ZEND_END_ARG_INFO()
-ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_scrollphatprintf, 0, 0, 0)
- ZEND_ARG_PASS_INFO(0)
- ZEND_ARG_PASS_INFO(0)
-ZEND_END_ARG_INFO()
-ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_scrollphatprintspeed, 0, 0, 0)
- ZEND_ARG_PASS_INFO(0)
-ZEND_END_ARG_INFO()
-ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_scrollphatintensity, 0, 0, 0)
- ZEND_ARG_PASS_INFO(0)
-ZEND_END_ARG_INFO()
-ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_scrollphatsetup, 0, 0, 0)
-ZEND_END_ARG_INFO()
 
 
 /* entry subsection */
@@ -6281,11 +5803,11 @@ static zend_function_entry wiringpi_functions[] = {
  SWIG_ZEND_NAMED_FE(piboardid,_wrap_piBoardId,swig_arginfo_piboardid)
  SWIG_ZEND_NAMED_FE(wpipintogpio,_wrap_wpiPinToGpio,swig_arginfo_wpipintogpio)
  SWIG_ZEND_NAMED_FE(physpintogpio,_wrap_physPinToGpio,swig_arginfo_physpintogpio)
+ SWIG_ZEND_NAMED_FE(physpintopin,_wrap_physPinToPin,swig_arginfo_physpintopin)
  SWIG_ZEND_NAMED_FE(setpaddrive,_wrap_setPadDrive,swig_arginfo_setpaddrive)
  SWIG_ZEND_NAMED_FE(getalt,_wrap_getAlt,swig_arginfo_getalt)
  SWIG_ZEND_NAMED_FE(pwmtonewrite,_wrap_pwmToneWrite,swig_arginfo_pwmtonewrite)
  SWIG_ZEND_NAMED_FE(digitalwritebyte,_wrap_digitalWriteByte,swig_arginfo_digitalwritebyte)
- SWIG_ZEND_NAMED_FE(digitalreadbyte,_wrap_digitalReadByte,swig_arginfo_digitalreadbyte)
  SWIG_ZEND_NAMED_FE(pwmsetmode,_wrap_pwmSetMode,swig_arginfo_pwmsetmode)
  SWIG_ZEND_NAMED_FE(pwmsetrange,_wrap_pwmSetRange,swig_arginfo_pwmsetrange)
  SWIG_ZEND_NAMED_FE(pwmsetclock,_wrap_pwmSetClock,swig_arginfo_pwmsetclock)
@@ -6309,7 +5831,6 @@ static zend_function_entry wiringpi_functions[] = {
  SWIG_ZEND_NAMED_FE(wiringpii2csetup,_wrap_wiringPiI2CSetup,swig_arginfo_wiringpii2csetup)
  SWIG_ZEND_NAMED_FE(wiringpispigetfd,_wrap_wiringPiSPIGetFd,swig_arginfo_wiringpispigetfd)
  SWIG_ZEND_NAMED_FE(wiringpispidatarw,_wrap_wiringPiSPIDataRW,swig_arginfo_wiringpispidatarw)
- SWIG_ZEND_NAMED_FE(wiringpispisetupmode,_wrap_wiringPiSPISetupMode,swig_arginfo_wiringpispisetupmode)
  SWIG_ZEND_NAMED_FE(wiringpispisetup,_wrap_wiringPiSPISetup,swig_arginfo_wiringpispisetup)
  SWIG_ZEND_NAMED_FE(serialopen,_wrap_serialOpen,swig_arginfo_serialopen)
  SWIG_ZEND_NAMED_FE(serialclose,_wrap_serialClose,swig_arginfo_serialclose)
@@ -6322,7 +5843,6 @@ static zend_function_entry wiringpi_functions[] = {
  SWIG_ZEND_NAMED_FE(shiftin,_wrap_shiftIn,swig_arginfo_shiftin)
  SWIG_ZEND_NAMED_FE(shiftout,_wrap_shiftOut,swig_arginfo_shiftout)
  SWIG_ZEND_NAMED_FE(drcsetupserial,_wrap_drcSetupSerial,swig_arginfo_drcsetupserial)
- SWIG_ZEND_NAMED_FE(ads1115setup,_wrap_ads1115Setup,swig_arginfo_ads1115setup)
  SWIG_ZEND_NAMED_FE(max31855setup,_wrap_max31855Setup,swig_arginfo_max31855setup)
  SWIG_ZEND_NAMED_FE(max5322setup,_wrap_max5322Setup,swig_arginfo_max5322setup)
  SWIG_ZEND_NAMED_FE(mcp23008setup,_wrap_mcp23008Setup,swig_arginfo_mcp23008setup)
@@ -6393,18 +5913,6 @@ static zend_function_entry wiringpi_functions[] = {
  SWIG_ZEND_NAMED_FE(piglowsetup,_wrap_piGlowSetup,swig_arginfo_piglowsetup)
  SWIG_ZEND_NAMED_FE(setupnesjoystick,_wrap_setupNesJoystick,swig_arginfo_setupnesjoystick)
  SWIG_ZEND_NAMED_FE(readnesjoystick,_wrap_readNesJoystick,swig_arginfo_readnesjoystick)
- SWIG_ZEND_NAMED_FE(scrollphatpoint,_wrap_scrollPhatPoint,swig_arginfo_scrollphatpoint)
- SWIG_ZEND_NAMED_FE(scrollphatline,_wrap_scrollPhatLine,swig_arginfo_scrollphatline)
- SWIG_ZEND_NAMED_FE(scrollphatlineto,_wrap_scrollPhatLineTo,swig_arginfo_scrollphatlineto)
- SWIG_ZEND_NAMED_FE(scrollphatrectangle,_wrap_scrollPhatRectangle,swig_arginfo_scrollphatrectangle)
- SWIG_ZEND_NAMED_FE(scrollphatupdate,_wrap_scrollPhatUpdate,swig_arginfo_scrollphatupdate)
- SWIG_ZEND_NAMED_FE(scrollphatclear,_wrap_scrollPhatClear,swig_arginfo_scrollphatclear)
- SWIG_ZEND_NAMED_FE(scrollphatputchar,_wrap_scrollPhatPutchar,swig_arginfo_scrollphatputchar)
- SWIG_ZEND_NAMED_FE(scrollphatputs,_wrap_scrollPhatPuts,swig_arginfo_scrollphatputs)
- SWIG_ZEND_NAMED_FE(scrollphatprintf,_wrap_scrollPhatPrintf,swig_arginfo_scrollphatprintf)
- SWIG_ZEND_NAMED_FE(scrollphatprintspeed,_wrap_scrollPhatPrintSpeed,swig_arginfo_scrollphatprintspeed)
- SWIG_ZEND_NAMED_FE(scrollphatintensity,_wrap_scrollPhatIntensity,swig_arginfo_scrollphatintensity)
- SWIG_ZEND_NAMED_FE(scrollphatsetup,_wrap_scrollPhatSetup,swig_arginfo_scrollphatsetup)
  SWIG_ZEND_NAMED_FE(swig_wiringpi_alter_newobject,_wrap_swig_wiringpi_alter_newobject,NULL)
  SWIG_ZEND_NAMED_FE(swig_wiringpi_get_newobject,_wrap_swig_wiringpi_get_newobject,NULL)
 {NULL, NULL, NULL}

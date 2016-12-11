@@ -103,6 +103,10 @@ abstract class wiringpi {
 		return physPinToGpio($physPin);
 	}
 
+	static function physPinToPin($physPin) {
+		return physPinToPin($physPin);
+	}
+
 	static function setPadDrive($group,$value) {
 		setPadDrive($group,$value);
 	}
@@ -117,10 +121,6 @@ abstract class wiringpi {
 
 	static function digitalWriteByte($value) {
 		digitalWriteByte($value);
-	}
-
-	static function digitalReadByte() {
-		return digitalReadByte();
 	}
 
 	static function pwmSetMode($mode) {
@@ -215,10 +215,6 @@ abstract class wiringpi {
 		return wiringPiSPIDataRW($channel,$data,$len);
 	}
 
-	static function wiringPiSPISetupMode($channel,$speed,$mode) {
-		return wiringPiSPISetupMode($channel,$speed,$mode);
-	}
-
 	static function wiringPiSPISetup($channel,$speed) {
 		return wiringPiSPISetup($channel,$speed);
 	}
@@ -265,10 +261,6 @@ abstract class wiringpi {
 
 	static function drcSetupSerial($pinBase,$numPins,$device,$baud) {
 		return drcSetupSerial($pinBase,$numPins,$device,$baud);
-	}
-
-	static function ads1115Setup($pinBase,$i2cAddress) {
-		return ads1115Setup($pinBase,$i2cAddress);
 	}
 
 	static function max31855Setup($pinBase,$spiChannel) {
@@ -549,54 +541,6 @@ abstract class wiringpi {
 
 	static function readNesJoystick($joystick) {
 		return readNesJoystick($joystick);
-	}
-
-	static function scrollPhatPoint($x,$y,$colour) {
-		scrollPhatPoint($x,$y,$colour);
-	}
-
-	static function scrollPhatLine($x0,$y0,$x1,$y1,$colour) {
-		scrollPhatLine($x0,$y0,$x1,$y1,$colour);
-	}
-
-	static function scrollPhatLineTo($x,$y,$colour) {
-		scrollPhatLineTo($x,$y,$colour);
-	}
-
-	static function scrollPhatRectangle($x1,$y1,$x2,$y2,$colour,$filled) {
-		scrollPhatRectangle($x1,$y1,$x2,$y2,$colour,$filled);
-	}
-
-	static function scrollPhatUpdate() {
-		scrollPhatUpdate();
-	}
-
-	static function scrollPhatClear() {
-		scrollPhatClear();
-	}
-
-	static function scrollPhatPutchar($c_) {
-		return scrollPhatPutchar($c_);
-	}
-
-	static function scrollPhatPuts($str) {
-		scrollPhatPuts($str);
-	}
-
-	static function scrollPhatPrintf($message) {
-		scrollPhatPrintf($message);
-	}
-
-	static function scrollPhatPrintSpeed($cps10) {
-		scrollPhatPrintSpeed($cps10);
-	}
-
-	static function scrollPhatIntensity($percent) {
-		scrollPhatIntensity($percent);
-	}
-
-	static function scrollPhatSetup() {
-		return scrollPhatSetup();
 	}
 }
 
